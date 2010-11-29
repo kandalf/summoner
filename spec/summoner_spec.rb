@@ -17,9 +17,9 @@ describe Summoner do
   it "should prepare a monster" do
     beast = Summoner.prepare :esper do |s|
       s.power 6
-    end
+    end 
     beast.should be_a Summoner::Beast
-  end 
+  end  
 
   it "should summon a previously prepared monster" do
 
@@ -56,6 +56,31 @@ describe Summoner do
     monster = Summoner.summon(:monster, :kind => "Aeon")
     monster.should_not be_nil
     monster.kind.should == "Aeon"
+  end
+
+  it "should pepare a monster with a custom class" do
+    beast = Summoner.prepare :avatar, :class => Monster do |a|
+      a.kind "Avatar"
+    end
+
+    beast.should be_a Summoner::Beast
+
+    avatar = Summoner.summon(:avatar)
+
+    avatar.should be_a Monster
+    avatar.kind.should == "Avatar"
+  end
+
+  it "should prepare a monster with a custom namespaced class" do
+    beast = Summoner.prepare :avatar, :class => Monsters::Avatar do |a|
+      a.kind "Monster avatar"
+    end
+
+    beast.should be_a Summoner::Beast
+
+    avatar = Summoner.summon(:avatar)
+    avatar.should be_a Monsters::Avatar
+    avatar.kind.should == "Monster avatar"
   end
 
 end

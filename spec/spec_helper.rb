@@ -20,3 +20,8 @@ end
 
 class Esper < Monster
 end
+
+module Monsters
+  class Avatar < Monster
+  end
+end
