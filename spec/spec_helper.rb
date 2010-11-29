@@ -15,6 +15,7 @@ class Monster
       self.send("#{k.to_s}=", v)
     end
     true
+  end
 end
 
 class Esper < Monster
