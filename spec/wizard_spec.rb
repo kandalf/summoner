@@ -5,7 +5,7 @@ describe Wizard do
 
   before :all do
     Wizard.prepare :conjure do |c|
-      c.name "Turn to toad"
+      c.name "Turn into a toad"
     end
   end
 
@@ -15,7 +15,7 @@ describe Wizard do
       s.level 1
     end
     attributes.should be_a Array
-  end
+  end 
 
   it "should invoke a previously prepared spell" do
 
@@ -23,7 +23,7 @@ describe Wizard do
 
     conjure.should_not be_nil
     conjure.should be_a Conjure
-    conjure.name.should == "Turn to toad"
+    conjure.name.should == "Turn into a toad"
   end
 
   it "should invoke a prepared spell with custom name" do
@@ -34,6 +34,22 @@ describe Wizard do
     conjure.should_not be_nil
     conjure.should be_a Conjure
     conjure.name.should == "Turn back to knight"
+  end
+
+  it "should override attributes with a hash" do
+    conjure = Wizard.invoke(:conjure, :name => "Turn into a Camel")
+    conjure.should_not be nil
+    conjure.name.should == "Turn into a Camel"
+  end
+
+  it "should change attributes on the second invoke" do
+    conjure = Wizard.invoke(:conjure)
+    conjure.should_not be_nil
+    conjure.name.should == "Turn into a toad"
+
+    conjure = Wizard.invoke(:conjure, :name => "Turn into a snake")
+    conjure.should_not be_nil
+    conjure.name.should == "Turn into a snake"
   end
 
 end

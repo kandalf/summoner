@@ -1,14 +1,7 @@
+require 'wizard/attributes'
+
 module Wizard
-  class Attributes < Hash
-    def method_missing(name, *args, &block)
-      if name == :has_one
-        self[args.first] = Wizard.invoke args.first
-      elsif name == :has_many
-        self[args.first] = [Wizard.invoke(args.first)]
-      else
-        self[name.to_sym] = args
-      end
-    end
+  class DefinitionDuplicatedError < RuntimeError
   end
 
   @@attributes = Attributes.new
@@ -18,25 +11,22 @@ module Wizard
     @@attributes
   end
 
-  class DefinitionDuplicatedError < RuntimeError
-  end
-
-  def self.invoke(name)
+  def self.invoke(name, attributes = {})
     if @@spells.has_key? :name
       spell = @spells[:name]
     else
-      attributes = self.attributes[name].clone
-      prepared_options = attributes.delete(:options)
+      new_attributes = self.attributes[name].clone.merge(attributes)
+      prepared_options = new_attributes.delete(:options)
 
       klass = prepared_options.has_key?(:class) ? prepared_options[:class] : eval(name.to_s.capitalize)#.constantize
   
-      spell = klass.create(self.attributes[name])
+      spell = klass.create(new_attributes)
     end
     if block_given?
-      yield attributes
-      spell.update_attributes(attributes)
+      yield new_attributes
+      spell.update_attributes(new_attributes)
     end
-    self.attributes[name].merge(attributes)
+    self.attributes[name].merge(new_attributes)
     @@spells[name] = spell
   end
 
