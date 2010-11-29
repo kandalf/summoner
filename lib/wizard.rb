@@ -4,6 +4,9 @@ module Wizard
   class DefinitionDuplicatedError < RuntimeError
   end
 
+  class UnpreparedSpellError < RuntimeError
+  end
+
   @@attributes = Attributes.new
   @@spells = {}
 
@@ -11,22 +14,24 @@ module Wizard
     @@attributes
   end
 
-  def self.invoke(name, attributes = {})
+  def self.invoke(name, attrs = {})
+    raise UnpreparedSpellError unless self.attributes.has_key? name
+
     if @@spells.has_key? :name
       spell = @spells[:name]
     else
-      new_attributes = self.attributes[name].clone.merge(attributes)
-      prepared_options = new_attributes.delete(:options)
+      new_attrs = self.attributes[name].clone.merge(attrs)
+      prepared_options = new_attrs.delete(:options)
 
       klass = prepared_options.has_key?(:class) ? prepared_options[:class] : eval(name.to_s.capitalize)#.constantize
   
-      spell = klass.create(new_attributes)
+      spell = klass.create(new_attrs)
     end
     if block_given?
-      yield new_attributes
-      spell.update_attributes(new_attributes)
+      yield new_attrs
+      spell.update_attributes(new_attrs)
     end
-    self.attributes[name].merge(new_attributes)
+    self.attributes[name].merge(new_attrs)
     @@spells[name] = spell
   end
 
