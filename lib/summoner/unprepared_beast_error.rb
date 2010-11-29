@@ -1,0 +1,2 @@
+class UnpreparedBeastError < RuntimeError
+end

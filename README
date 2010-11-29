@@ -1,0 +1,24 @@
+Summoner
+========
+
+Summoner is a really simple fixture replacement for Ruby.
+
+You can _prepare_ your _monsters_ like:
+
+Summoner.prepare :monster do |c|
+  c.type "Esper"
+end
+
+Then, you can _summon_ your _monsters_ like:
+
+Summoner.summon :monster
+
+Or, if you need to override default values:
+
+Summoner.summon :monster do |c|
+  c.type "Guardian"
+end
+
+Also, you can override options with a hash:
+
+Summoner.summon(:monster, :type => "Avatar")

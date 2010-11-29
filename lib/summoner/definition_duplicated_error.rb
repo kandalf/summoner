@@ -1,0 +1,3 @@
+class DefinitionDuplicatedError < RuntimeError
+end
+
