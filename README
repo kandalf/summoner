@@ -1,0 +1,20 @@
+Wizard
+======
+
+Wizard is a really simple fixture replacement for Ruby.
+
+You can _prepare_ your _spells_ like:
+
+Wizard.prepare :conjure do |c|
+  c.name "Turn to Toad"
+end
+
+Then, you can _invoke_ your _spells_ like:
+
+Wizard.invoke :conjure
+
+Or, if you need to override default values:
+
+Wizard.invoke :conjure do |c|
+  c.name "Turn back to man"
+end
