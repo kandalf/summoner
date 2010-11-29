@@ -1,7 +1,12 @@
 Summoner
 ========
 
-Summoner is a really simple fixture replacement for Ruby.
+Summoner is a really simple fixture replacemoent for Ruby.
+
+How to install
+--------------
+gem install summoner
+
 
 You can _prepare_ your _monsters_ like:
 
@@ -22,3 +27,11 @@ end
 Also, you can override options with a hash:
 
 Summoner.summon(:monster, :type => "Avatar")
+
+Rails
+-----
+
+1. Add config.gem "summoner" to the config/environments/test.rb or gem "summoner" to your Gemfile if you're using bundler
+2. Define your _monsters_ on a file, e.g: spec/monsters.rb (you can call it as you please)
+3. Require that file on your (test|spec)_helper.rb
+4. Summon your _monsters_ on your tests/specs
