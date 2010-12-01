@@ -1,5 +1,5 @@
-require File.dirname(File.expand_path(__FILE__)) + '/../lib/summoner'
 require File.dirname(File.expand_path(__FILE__)) + '/spec_helper'
+require File.dirname(File.expand_path(__FILE__)) + '/../lib/summoner'
 
 describe Summoner do 
 
@@ -81,6 +81,18 @@ describe Summoner do
     avatar = Summoner.summon(:avatar)
     avatar.should be_a Monsters::Avatar
     avatar.kind.should == "Monster avatar"
+  end
+
+  it "should add summon ability to AR" do
+    creature = Aeon.summon do |a|
+      a.name "Flux"
+      a.power 10 
+    end
+
+    creature.should_not be_nil
+    creature.should be_a Aeon
+    creature.name.should == "Flux"
+    creature.power.should == 10
   end
 
 end

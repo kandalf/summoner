@@ -1,3 +1,10 @@
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+  :adapter => "sqlite3",
+  :database => File.dirname(File.expand_path(__FILE__)) + "/db/summoner.sqlite3"
+)
+
 class Monster
   attr_accessor :kind
   attr_accessor :power
@@ -16,6 +23,9 @@ class Monster
     end
     true
   end
+  def save(validate=true)
+    return true
+  end
 end
 
 class Esper < Monster
@@ -25,3 +35,6 @@ module Monsters
   class Avatar < Monster
   end
 end
+
+class Power < ActiveRecord::Base;end
+class Aeon < ActiveRecord::Base;end

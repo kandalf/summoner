@@ -18,6 +18,7 @@ module Summoner
       yield @@beasts[name]
     end
     monster.update_attributes(@@beasts[name].attributes)
+    monster.save(false)
     monster
   end
 
@@ -32,4 +33,15 @@ module Summoner
     @@beasts.clear
   end
 
+
+  module ClassMethods
+    def summon(options = {}, &block)
+      object = self.create
+      yield object if block_given?
+      object.save(false)
+      object
+    end
+  end
 end
+
+ActiveRecord::Base.extend(Summoner::ClassMethods) if defined? ActiveRecord
