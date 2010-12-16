@@ -20,6 +20,7 @@ module Summoner
     end
     monster.update_attributes(@@beasts[name].attributes)
     monster.save(false)
+    monster.reload
     monster
   end
 
