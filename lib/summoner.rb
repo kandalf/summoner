@@ -1,6 +1,7 @@
 require 'summoner/beast'
 require 'summoner/definition_duplicated_error'
 require 'summoner/unprepared_beast_error'
+require 'summoner/hash'
 
 module Summoner
   @@beasts = {}
@@ -8,7 +9,7 @@ module Summoner
   def self.summon(name, attrs = {})
     raise UnpreparedBeastError unless @@beasts.has_key? name
   
-    @@beasts[name].attributes = @@beasts[name].attributes.merge(attrs)
+    @@beasts[name].attributes = @@beasts[name].attributes.merge(attrs.symbolize_keys)
 
     klass = @@beasts[name].options.has_key?(:class) ? @@beasts[name].options[:class] : eval(name.to_s.capitalize)
 

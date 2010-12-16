@@ -85,8 +85,8 @@ describe Summoner do
 
   it "should add summon ability to AR" do
     creature = Aeon.summon do |a|
-      a.name "Flux"
-      a.power 10 
+      a.name = "Flux"
+      a.power = 10 
     end
 
     creature.should_not be_nil
