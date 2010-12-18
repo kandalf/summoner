@@ -28,6 +28,17 @@ Also, you can override options with a hash:
 
 Summoner.summon(:monster, :type => "Avatar")
 
+v0.1.2
+======
+From v0.1.2 on, you can also summon ActiveRecord instances directly from their classes without prepare them before, for example:
+
+Monster.summon do |m|
+  m.type = "Esper"
+end
+
+Note the difference between with the _prepare_ method, here you should use the *=* sign to assign values.
+
+
 Rails
 -----
 
