@@ -26,6 +26,9 @@ class Monster
   def save(validate=true)
     return true
   end
+  def reload
+    return true
+  end
 end
 
 class Esper < Monster

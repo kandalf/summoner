@@ -38,10 +38,14 @@ module Summoner
 
   module ClassMethods
     def summon(options = {}, &block)
-      object = self.create
-      yield object if block_given?
-      object.save(false)
-      object
+      begin
+        object = self.create(options)
+        yield object if block_given?
+        object.save(false)
+        object
+      rescue ArgumentError
+        puts "You're probably summoning something by itself. Try defining attributes as attr = value"
+      end
     end
   end
 end
