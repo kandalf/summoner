@@ -9,17 +9,17 @@ module Summoner
   def self.summon(name, attrs = {})
     raise UnpreparedBeastError unless @@beasts.has_key? name
   
-    @@beasts[name].attributes = @@beasts[name].attributes.merge(attrs.symbolize_keys)
-
     klass = @@beasts[name].options.has_key?(:class) ? @@beasts[name].options[:class] : eval(name.to_s.capitalize)
 
-    monster = klass.create(@@beasts[name].attributes)
+    monster = klass.create(@@beasts[name].attributes.merge(attrs.symbolize_keys))
 
     if block_given?
-      yield @@beasts[name]
+      bicho = @@beasts[name].dup
+      yield bicho
+      monster = klass.create(bicho.attributes.merge(attrs.symbolize_keys))
     end
-    monster.update_attributes(@@beasts[name].attributes)
-    monster.save(false)
+
+    monster.save(:validate => false)
     monster.reload
     monster
   end
