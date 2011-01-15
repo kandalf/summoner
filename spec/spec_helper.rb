@@ -29,6 +29,9 @@ class Monster
   def reload
     return true
   end
+  def attributes
+    {:kind => kind, :power => power}
+  end
 end
 
 class Esper < Monster
