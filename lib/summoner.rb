@@ -14,11 +14,11 @@ module Summoner
     monster = klass.create(@@beasts[name].attributes.merge(attrs.symbolize_keys))
 
     if block_given?
-      bicho = @@beasts[name].dup
+      bicho = Beast.new     
       yield bicho
-      monster = klass.create(bicho.attributes.merge(attrs.symbolize_keys))
+      monster.update_attributes(monster.attributes.merge(bicho.attributes))
     end
-
+    
     monster.save(:validate => false)
     monster.reload
     monster
