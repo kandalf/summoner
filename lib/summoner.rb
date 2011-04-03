@@ -19,7 +19,8 @@ module Summoner
       monster.update_attributes(monster.attributes.merge(bicho.attributes))
     end
     
-    monster.save(:validate => false)
+    #monster.save(:validate => false)
+    save_object(monster)
     monster.reload
     monster
   end
@@ -33,15 +34,22 @@ module Summoner
 
   def self.reset
     @@beasts.clear
-  end
+  end 
 
+  def self.save_object(obj)
+    if defined? ActiveRecord and ActiveRecord::VERSION::MAJOR >= 3
+      obj.save(:validate => false)
+    else
+      obj.save(false)
+    end
+  end
 
   module ClassMethods
     def summon(options = {}, &block)
       begin
         object = self.create(options)
         yield object if block_given?
-        object.save(false)
+        Summoner.save_object(object)
         object
       rescue ArgumentError
         puts "You're probably summoning something by itself. Try defining attributes as attr = value"
